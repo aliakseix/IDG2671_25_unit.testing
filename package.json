@@ -1,0 +1,23 @@
+{
+  "name": "docker-basic-inclass",
+  "version": "0.0.1",
+  "description": "basic example of an express server to be used with Docker",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "node --env-file .env --watch server.js",
+    "start": "node --env-file .env server.js"
+  },
+  "author": "Myself",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.0.1",
+    "mongodb": "^6.13.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "globals": "^16.0.0"
+  }
+}

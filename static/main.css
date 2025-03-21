@@ -1,0 +1,26 @@
+
+
+document, body {
+	font-size: 18px;
+}
+
+input[type=submit]{
+	margin: 1vw;
+	background-color:aliceblue;
+	color: gray;
+	cursor: pointer;
+}
+
+.input-container{
+	margin: 1vw;
+}
+
+.error-message{
+	display: none;
+	color: red;
+	border: 1px solid red;
+	background-color: blanchedalmond;
+	border-radius: 8px;
+	margin: 0 2vw;
+	padding: 1vw;
+}
