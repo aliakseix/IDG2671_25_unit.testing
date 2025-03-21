@@ -1,0 +1,3 @@
+# Quick-N-Dirty example of an Express app - for unit testing
+
+Keep in mind that it's "quick and dirty" type of programming here - not all good coding practices were followed...
