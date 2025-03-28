@@ -3,3 +3,4 @@ compose.yaml
 Dockerfile
 .dockerignore
 node_modules
+tmp.js

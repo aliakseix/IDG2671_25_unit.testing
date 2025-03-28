@@ -23,7 +23,8 @@ const dbConnPr = (()=>{
 	const {protocol, usr, pwd, hostname, port, dbName} = config.mongo;
 	// const MONGO_URL = protocol + "://" + usr + ":" + pwd + "@" + hostname + ":" + port;
 	// const MONGO_URL = `${protocol}://${usr}:${pwd}@${hostname}:${port}/`;
-	const MONGO_URL = `${protocol}://${hostname}:${port}/`;
+	// const MONGO_URL = `${protocol}://${hostname}:${port}/`;
+	const MONGO_URL = config.getMongoUri();
 	console.log(MONGO_URL);
 	const mongoClient = new mongo.MongoClient(MONGO_URL);
 	return mongoClient.connect().then(connection=>{
@@ -42,8 +43,39 @@ app.get("/", (req, res)=>{
 	}).catch(err=>handleErr(err, res));
 });
 
+// deleting a specific advertiser
+app.delete("/ads/:adName", (req, res)=>{
+	console.log("Deleting an advertiser:", req.params.adName);
+	// asking a 3rd party API if we can delete things this time
+	return fetch("http://some.3rd.party.api:8092/canWeDoIt")
+		.then(apiResponse=>{
+			if(!apiResponse.ok) throw new Error("External API failed");
+			return apiResponse.json();
+		})
+		.then(apiResponseJson=>{
+			console.log(apiResponseJson);
+			if(!apiResponseJson.canWeDoIt){
+				return res.status(451).send("Unavailable For Legal Reasons");
+			}
+			// 3rd party api allowed us to delete a record
+			return dbConnPr
+				.then(db=>{
+					// deleting an advertiser from the database
+					return db.collection("ads").deleteOne({name: req.params.adName});
+				})
+				.then(deletionResult=>{
+					// checking if the name was there
+					if(deletionResult.deletedCount === 0){
+						return res.status(404).send("The advertiser you tried to delete was not found");
+					}
+					// sending a response back to the client
+					return res.status(200).send("Deleted");
+				});
+		});
+});
+
 // handling incoming data
-app.post("/save-ads", (req, res)=>{
+app.post("/ads", (req, res)=>{
 	console.log("Saving an ad...", req.body);
 	// validation
 	// req.body.fullname
@@ -77,7 +109,8 @@ function quit(eType){
 	server.close(()=>{
 		console.log("Express server closed.");
 		process.exit();
-	});
-	
+	});	
 }
 ['SIGINT', 'SIGQUIT', 'SIGTERM'].forEach(eType=>{console.log("Attaching for ", eType); process.on(eType, quit);});
+
+module.exports = server;

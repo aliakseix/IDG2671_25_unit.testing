@@ -7,6 +7,14 @@ const config = {
 		"hostname": process.env.MONGODB_HOSTNAME || "localhost",
 		"port": process.env.MONGODB_PORT || 27017,
 		"dbName": "idg2671"
+	},
+	__injectNewMongoConfigValues(newMongoConfigObj){
+		Object.assign(this.mongo, newMongoConfigObj);
+		return this;
+	},
+	getMongoUri(){
+		const m = this.mongo;
+		return `${m.protocol}://${m.hostname}:${m.port}/`;
 	}
 };
 

@@ -12,7 +12,7 @@ function main(){
 			adNameEl.setAttribute("placeholder", "Advertiser Name can't be Empty!!!");
 			return;
 		}
-		fetch("/save-ads", {
+		fetch("/ads", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
