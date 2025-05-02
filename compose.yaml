@@ -1,0 +1,49 @@
+services:
+  test-mongodb:
+    image: mongo:latest
+    container_name: fancy-mongodb-service
+    expose:
+      - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: aliaksei
+      MONGO_INITDB_ROOT_PASSWORD: asdf1234
+    healthcheck:
+      test: mongosh --eval "db.adminCommand('ping').ok"
+      interval: 6s
+      timeout: 5s
+      retries: 3
+    networks:
+      some-fancy-network:
+        aliases:
+          - some-other-fancy-network
+          - another-fancy-network
+    deploy:
+      labels:
+        some.sort.of.example.label: I am just a label...
+      restart_policy:
+        condition: unless-stopped
+        delay: 3s
+        window: 15s
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 175M
+  
+  test-app:
+    container_name: yt-app-test
+    build: .
+    depends_on:
+      test-mongodb:
+        condition: service_healthy
+        restart: true
+    restart: unless-stopped
+    ports:
+      - 8085:8085
+    environment:
+      ANOTHER_ENV_VAR: foobar
+      MONGODB_HOSTNAME: test-mongodb
+    networks:
+      - some-fancy-network
+
+networks:
+  some-fancy-network:
