@@ -1,0 +1,65 @@
+const { before, after, describe, it, beforeEach, afterEach } = require("node:test");
+const assert = require("node:assert");
+const puppeteer = require("puppeteer");
+const path = require("path");
+
+describe("The 'How to become a Youtuber page'", ()=>{
+	let browser, tab;
+	before(async ()=>{
+		browser = await puppeteer.launch({
+			headless: false,
+			args: [
+				"--window-size=1440,1000"
+			],
+			slowMo: 50
+		});
+	});
+
+	after(async ()=>{
+		await browser.close();
+	});
+
+	beforeEach(async ()=>{
+		tab = await browser.newPage();
+		await tab.goto("http://localhost:8085", {waitUntil: "load"});
+	});
+
+	it("should load", async ()=>{
+		const title = await  tab.title();
+		assert.strictEqual(title, "How to become a YouTuber");
+		// const screenshotF = path.resolve(__dirname, "screenshots", "basic.smoke.test.png");
+		// console.log("screenshot path:", screenshotF);
+		// await tab.screenshot({path: screenshotF, fullPage: true});
+	});
+
+	it("should allow for creating new advertiser records", async()=>{
+		const author = "John Doe";
+		const company  = "Standard Oil";
+		const url = "https://en.wikipedia.org/wiki/Standard_Oil";
+		await tab.type("#name", company);
+		await tab.type("#url", url);
+		await tab.type("#fullname", author);
+		// await tab.selector("#name").type(company);
+		// await tab.selector("#url").type(url);
+		// await tab.selector("#fullname").type(author);
+
+		// handling response status code
+		tab.on("response", async (resp)=>{
+			const status = resp.status();
+			if(status >= 300 && status < 400){
+				return;
+			}
+			assert.strictEqual(status, 200);
+		});
+
+		// simiulating clicking submit
+		await Promise.all(
+			[
+				tab.click("#adForm input[type='submit']"),
+				tab.waitForNavigation({waitUntil: "load"})
+			]
+		);
+	});
+});
+
+
