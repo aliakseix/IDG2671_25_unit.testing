@@ -28,10 +28,11 @@ jobs:
           with:
               username: ${{ secrets.DOCKERHUB_USERNAME }}
               password: ${{ secrets.DOCKERHUB_TOKEN }}
+        - run: echo $(pwd) && echo $(ls)
         - name: build and push our image to dockerhub
           uses: docker/build-push-action@v5
           with:
             context: .
-            file: Dockerfile
+            file: ./Dockerfile
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/idg2671_25:latest
