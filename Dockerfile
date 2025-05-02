@@ -4,7 +4,7 @@ LABEL author="Aliaksei"
 LABEL version="0.0.1"
 LABEL iamarandomlable="hello there"
 
-EXPOSE 8085/tcp
+EXPOSE 8181/tcp
 
 ENV MONGODB_PORT=27017
 

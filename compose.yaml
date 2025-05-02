@@ -38,7 +38,7 @@ services:
         restart: true
     restart: unless-stopped
     ports:
-      - 8085:8085
+      - 8181:8181
     environment:
       ANOTHER_ENV_VAR: foobar
       MONGODB_HOSTNAME: test-mongodb

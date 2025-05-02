@@ -21,7 +21,7 @@ describe("The 'How to become a Youtuber page'", ()=>{
 
 	beforeEach(async ()=>{
 		tab = await browser.newPage();
-		await tab.goto("http://localhost:8085", {waitUntil: "load"});
+		await tab.goto("http://localhost:8181", {waitUntil: "load"});
 	});
 
 	it("should load", async ()=>{
