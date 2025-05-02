@@ -14,6 +14,9 @@ const config = {
 	},
 	getMongoUri(){
 		const m = this.mongo;
+    if(process.env.NODE_ENV === "production"){
+      return `${m.protocol}://${m.usr}:${m.pwd}@${m.hostname}:${m.port}/`;
+    }
 		return `${m.protocol}://${m.hostname}:${m.port}/`;
 	}
 };

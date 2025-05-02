@@ -1,7 +1,7 @@
 services:
   test-mongodb:
     image: mongo:latest
-    container_name: fancy-mongodb-service
+    container_name: fancy-mongodb-service1
     expose:
       - 27017
     environment:

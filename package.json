@@ -4,9 +4,9 @@
   "description": "basic example of an express server to be used with Docker",
   "main": "server.js",
   "scripts": {
-    "test": "node --env-file .env --test",
-    "debug": "node --env-file .env --watch server.js",
-    "start": "node --env-file .env server.js"
+    "test": "node NODE_ENV=debug --env-file .env --test",
+    "debug": "node NODE_ENV=debug --env-file .env --watch server.js",
+    "start": "node NODE_ENV=production --env-file .env server.js"
   },
   "author": "Myself",
   "license": "ISC",
